@@ -7,8 +7,8 @@ def process_pdf_files_from_queue():
     #read a file from kafka topic
     try:
         config = get_config()
-        consumer = Consumer(config.get('pdf_config'))
-        consumer.subscribe(config.get('pdf_files'))
+        consumer = Consumer(config.get('consumer'))
+        consumer.subscribe(config.get('kafka-topic'))
         
         while True:
             message = consumer.poll(1.0)

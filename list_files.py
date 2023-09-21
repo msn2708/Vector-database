@@ -10,7 +10,7 @@ def list_files(dir):
         producer = Producer(config.get('producer'))
         for root,_,files in os.walk(data_dir):
             for file in files: 
-                producer.produce('tp-list-files', key=file, value=os.path.join(root, file))
+                producer.produce(config.get('kafka-topic'), key=file, value=os.path.join(root, file))
                 producer.flush()
         #return [os.path.join(root, file) for root, _, files in os.walk(data_dir) for file in files]
     except Exception as e: 

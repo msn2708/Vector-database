@@ -29,8 +29,8 @@ def process_file(filename):
       metadata = parsed_file['metadata']
       
     paragraphs = get_paragraphs(content)
-
     
+    """
     document = Document(file_name=filename, doc_type=doc_type, text=content)
     document.create_chunks()
     document.create_metadata(metadata=metadata)
@@ -38,25 +38,23 @@ def process_file(filename):
     session = SessionFactory().get_session().begin()
     session.add(document)
     session.commit()
-    
-    #insert_into_db(parsed_file,config)
+    """
+    insert_into_db(filename=filename,metadata=metadata,paragraphs=paragraphs,doctype=doc_type,config=get_config())
   except Exception as e:
     print(f"Error: {e}")
     
-def insert_into_db(parsed_file,config):
+def insert_into_db(filename,metadata,paragraphs,doctype,config):
     #input each of these paragraphs into a DB
     
     # Connect to the MariaDB database
     db_config = config.get('db_config')
     try:
-        paragraphs = get_paragraphs(parsed_file['content'])
-
         conn = mariadb.connect(**db_config)
         cursor = conn.cursor()
                 
         # Insert data into a table
         insert_query = "INSERT INTO vectordb.document (file_name, `text`, doc_type) VALUES (%s, %s, %s)"
-        doc_row = (parsed_file["metadata"]["resourceName"], sqlescape(''.join(paragraphs).replace('\n\n','\n').replace('\n','').strip()), parsed_file["metadata"]["Content-Type"])
+        doc_row = (filename, sqlescape(''.join(paragraphs).replace('\n\n','\n').replace('\n','').strip()), doctype)
         
         try:
           cursor.execute(insert_query,doc_row)

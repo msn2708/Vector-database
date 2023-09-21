@@ -7,4 +7,14 @@ db_config:
       database: vectordb
    }
 db_url: "mariadb+mariadbconnector://transformers:supportvectors.123@localhost/vectordb"
+producer: {
+    'bootstrap.servers': 'localhost:9092',  # Replace with your Kafka broker(s)
+    'client.id': 'python-producer'
+   }
+consumer: {
+    'bootstrap.servers': 'localhost:9092',  # Replace with your Kafka broker(s)
+    'group.id': 'python-consumer',
+    'auto.offset.reset': 'earliest'
+}
+kafka-topic: 'tp-list-files'
 embedding_model: ""
