@@ -1,0 +1,5 @@
+sqlmodel
+apache-airflow
+sqlalchemy
+pypdf
+confluent-kafka

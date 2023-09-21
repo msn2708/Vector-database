@@ -1,0 +1,10 @@
+data_dir: "/"
+db_config:
+   {
+      host: localhost, 
+      user: transformers, 
+      password: supportvectors.123, 
+      database: vectordb
+   }
+db_url: "mariadb+mariadbconnector://transformers:supportvectors.123@localhost/vectordb"
+embedding_model: ""
