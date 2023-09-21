@@ -33,6 +33,4 @@ def process_pdf_files_from_queue():
         consumer.close()
         
 if __name__ == '__main__':
-    files = list_files("/Users/smohammed/Documents/GitHub/Code/Support Vectors")
-    for file in files:
-        print (file) 
+    process_pdf_files_from_queue()

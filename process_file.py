@@ -4,6 +4,7 @@ from tika import parser
 import mysql.connector
 import mariadb
 from get_config import Config
+from create_embedding import get_embedding
 from sqlescapy import sqlescape
 from parser_factory import FileParserFactory
 from models import Document, Metadata, Chunk
@@ -65,8 +66,16 @@ def insert_into_db(filename,metadata,paragraphs,doctype,config):
         except mariadb.Error as e:
           print(f"SQL Error: {e.sqlstate}: {e.msg}")
         for paragraph in paragraphs:
-          chunk_query = "INSERT INTO vectordb.chunk (document_id, text, embedding) VALUES (%s, %s, %s)" 
-          chunk_row = (document_id, paragraph, '')
+          chunk_query = "INSERT INTO vectordb.chunk (document_id, text, embedding) VALUES (%s, %s, %s)"
+          chunk_row = (document_id, paragraph, get_embedding(paragraph))
+          try:
+            cursor.execute(chunk_query, chunk_row)
+          except mariadb.Error as e:
+            print(f"SQL Error: {e.sqlstate}: {e.msg}")
+            
+        for key,value in metadata:
+          chunk_query = "INSERT INTO vectordb.chunk (document_id, key, value) VALUES (%s, %s, %s)"
+          chunk_row = (document_id, key, value)
           try:
             cursor.execute(chunk_query, chunk_row)
           except mariadb.Error as e:
