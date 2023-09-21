@@ -1,11 +1,11 @@
 import os
 from confluent_kafka import Producer, Consumer, KafkaError
-from get_config import get_config
+from get_config import Config
 
-def list_files(dir):
+def list_files():
     #write each file to a kafka topic
     try:
-        config = get_config()
+        config = Config().get_config()
         data_dir = config.get('data_dir')     
         producer = Producer(config.get('producer'))
         for root,_,files in os.walk(data_dir):
@@ -22,6 +22,4 @@ def list_files(dir):
         producer.flush()
         
 if __name__ == '__main__':
-    files = list_files("/Users/smohammed/Documents/GitHub/Code/Support Vectors")
-    for file in files:
-        print (file) 
+    list_files()

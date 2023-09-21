@@ -3,7 +3,7 @@ import os
 from tika import parser
 import mysql.connector
 import mariadb
-from get_config import get_config
+from get_config import Config
 from sqlescapy import sqlescape
 from parser_factory import FileParserFactory
 from models import Document, Metadata, Chunk
@@ -39,7 +39,7 @@ def process_file(filename):
     session.add(document)
     session.commit()
     """
-    insert_into_db(filename=filename,metadata=metadata,paragraphs=paragraphs,doctype=doc_type,config=get_config())
+    insert_into_db(filename=filename,metadata=metadata,paragraphs=paragraphs,doctype=doc_type,config=Config().get_config())
   except Exception as e:
     print(f"Error: {e}")
     

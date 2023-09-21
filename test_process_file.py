@@ -1,7 +1,7 @@
 from tika import parser
 import mysql.connector
 import mariadb
-from get_config import get_config
+from get_config import Config
 from sqlescapy import sqlescape
 
     
@@ -9,7 +9,7 @@ def insert_into_db():
     #input each of these paragraphs into a DB
     
     # Connect to the MariaDB database
-    config = get_config()
+    config = Config().get_config()
     db_config = config.get('db_config')
     try:
 

@@ -1,10 +1,10 @@
 import yaml
 import sentence_transformers
 import spacy
-from get_config import get_config
+from get_config import Config
 
 def create_paragraph(content):
-    config = get_config()
+    config = Config().get_config()
 
     # Use Spacy to return an array of sentences from this corpus
     nlp = spacy.load("en_core_web_sm")

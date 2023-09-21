@@ -17,4 +17,4 @@ consumer: {
     'auto.offset.reset': 'earliest'
 }
 kafka-topic: 'tp-list-files'
-embedding_model: ""
+embedding_model: "distilbert-base-nli-mean-tokens"

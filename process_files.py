@@ -1,15 +1,15 @@
 from multiprocessing import Pool 
 from process_file import process_file
 from list_files import list_files
-from get_config import get_config
+from get_config import Config
 import concurrent.futures
 import os
 import sys
 
 def process_files(data_dir):
   # Get the config file and set up a pool of workers to do all processing in parallel
-  config = get_config()
-  files = list_files(data_dir)
+  config = Config().get_config()
+  files = list_files()
   print(files)
   #p = Pool(processes=None)
   #chunks = p.map(process_file, files)

@@ -1,12 +1,12 @@
 import os
-from get_config import get_config
+from get_config import Config
 from confluent_kafka import Producer, Consumer, KafkaError
 from process_file import process_file
 
 def process_pdf_files_from_queue():
     #read a file from kafka topic
     try:
-        config = get_config()
+        config = Config().get_config()
         consumer = Consumer(config.get('consumer'))
         consumer.subscribe(config.get('kafka-topic'))
         
