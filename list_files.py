@@ -10,10 +10,8 @@ def list_files():
         producer = Producer(config.get('producer'))
         for root,_,files in os.walk(data_dir):
             for file in files:
-                file = file.decode('utf-8')
-                print(file)
-                #producer.produce(config.get('kafka-topic'), key=file, value=os.path.join(root, file))
-                #producer.flush()
+                producer.produce(config.get('kafka-topic'), key=file, value=os.path.join(root, file))
+                producer.flush()
     except Exception as e: 
         print(f"Error in listing the directory: {e}")
     except KeyboardInterrupt:
