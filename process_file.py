@@ -74,6 +74,9 @@ def insert_into_db(filename,metadata,paragraphs,doctype,config):
             print(f"SQL Error while inserting CHUNK: {e.sqlstate}: {e.msg}")
             
         for key,value in metadata:
+          print(f"key is {key}")
+          print(f"value is {value}")
+          
           chunk_query = "INSERT INTO vectordb.metadata (document_id, key, value) VALUES (%s, %s, %s)"
           chunk_row = (document_id, key, value)
           try:
