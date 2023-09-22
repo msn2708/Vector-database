@@ -77,10 +77,10 @@ def insert_into_db(filename,metadata,paragraphs,doctype,config):
           print(f"key is {key}")
           print(f"value is {value}")
           
-          chunk_query = "INSERT INTO vectordb.metadata (document_id, key, value) VALUES (%s, %s, %s)"
-          chunk_row = (document_id, key, value)
+          metadata_query = "INSERT INTO vectordb.metadata (document_id, key, value) VALUES (%s, %s, %s)"
+          metadata_row = (document_id, key, value)
           try:
-            cursor.execute(chunk_query, chunk_row)
+            cursor.execute(metadata_query, metadata_row)
           except mariadb.Error as e:
             print(f"SQL Error while inserting into METADATA: {e.sqlstate}: {e.msg}")
           except Exception as e:
