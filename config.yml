@@ -1,4 +1,4 @@
-data_dir: "/home/transformers/bootcamp/projects/search/Vector-database"
+data_dir: "/home/transformers/bootcamp/projects/search/Vector-database/corpus"
 db_config:
    {
       host: localhost, 

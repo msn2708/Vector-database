@@ -64,14 +64,14 @@ def insert_into_db(filename,metadata,paragraphs,doctype,config):
           if(cursor.rowcount == 0):
             print("something failed")
         except mariadb.Error as e:
-          print(f"SQL Error: {e.sqlstate}: {e.msg}")
+          print(f"SQL Error while inserting DOCUMENT: {e.sqlstate}: {e.msg}")
         for paragraph in paragraphs:
           chunk_query = "INSERT INTO vectordb.chunk (document_id, text, embedding) VALUES (%s, %s, %s)"
           chunk_row = (document_id, paragraph, get_embedding(paragraph))
           try:
             cursor.execute(chunk_query, chunk_row)
           except mariadb.Error as e:
-            print(f"SQL Error: {e.sqlstate}: {e.msg}")
+            print(f"SQL Error while inserting CHUNK: {e.sqlstate}: {e.msg}")
             
         for key,value in metadata:
           chunk_query = "INSERT INTO vectordb.chunk (document_id, key, value) VALUES (%s, %s, %s)"
@@ -79,7 +79,7 @@ def insert_into_db(filename,metadata,paragraphs,doctype,config):
           try:
             cursor.execute(chunk_query, chunk_row)
           except mariadb.Error as e:
-            print(f"SQL Error: {e.sqlstate}: {e.msg}")
+            print(f"SQL Error while inserting into METADATA: {e.sqlstate}: {e.msg}")
 
         # Commit the transaction
         conn.commit()
