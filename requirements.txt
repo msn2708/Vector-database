@@ -4,3 +4,8 @@ sqlalchemy
 pypdf
 confluent-kafka
 tika
+mariadb
+sqlescapy
+numpy
+sentence_transformers
+mysql.connector

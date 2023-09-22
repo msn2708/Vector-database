@@ -1,7 +1,7 @@
 import multiprocessing
 import os
 from tika import parser
-import mysql.connector
+#import mysql.connector
 import mariadb
 from get_config import Config
 from create_embedding import get_embedding
