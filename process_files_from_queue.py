@@ -25,7 +25,7 @@ def process_pdf_files_from_queue():
             else:
                 print(f'Consumed message: key={message.key()}, value={message.value()}')
                 #process the file
-                process_file(message.value.decode('utf-8'))                                
+                process_file(message.value().decode('utf-8'))                                
 
     except KeyboardInterrupt:
         pass
