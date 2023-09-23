@@ -2,7 +2,7 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from process_files import process_files
 from process_file import process_file
-from list_files import list_files
+from list_files_to_kafka import list_files
 import datetime
 import get_config
 
