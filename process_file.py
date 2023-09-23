@@ -76,23 +76,23 @@ def insert_into_db(filename,metadata,paragraphs,doctype,config):
             print(f"SQL Error while inserting CHUNK: {e.sqlstate}: {e.msg}")
             return 
             
-        for item in metadata:
-          if metadata[item] != '':
-            print(f"key is {item}")
-            print(f"value is {metadata[item]}")
+        # for item in metadata:
+        #   if metadata[item] != '':
+        #     print(f"key is {item}")
+        #     print(f"value is {metadata[item]}")
             
-            metadata_query = "INSERT INTO vectordb.metadata (document_id, key, value) VALUES (%s, %s, %s)"
-            metadata_row = (document_id, sqlescape(item), sqlescape(metadata[item]))
-            try:
-              cursor.execute(metadata_query, metadata_row)
-            except mariadb.Error as e:
-              print(f"SQL Error while inserting into METADATA: {e.sqlstate}: {e.msg}")
-              return
-            except Exception as e:
-              print(f"Error while inserting into METADATA: {e}")
-              return
-            else:
-              continue
+        #     metadata_query = "INSERT INTO vectordb.metadata (document_id, key, value) VALUES (%s, %s, %s)"
+        #     metadata_row = (document_id, sqlescape(item), sqlescape(metadata[item]))
+        #     try:
+        #       cursor.execute(metadata_query, metadata_row)
+        #     except mariadb.Error as e:
+        #       print(f"SQL Error while inserting into METADATA: {e.sqlstate}: {e.msg}")
+        #       return
+        #     except Exception as e:
+        #       print(f"Error while inserting into METADATA: {e}")
+        #       return
+        #     else:
+        #       continue
 
         # Commit the transaction
         conn.commit()
