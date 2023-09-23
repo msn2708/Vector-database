@@ -1,5 +1,5 @@
 def get_paragraphs(content):
-  paragraphs = content.split('\n\n')
+  paragraphs = content.split('\n')
   for para in paragraphs:
     para.replace('\n',' ')
     para.replace('\t', ' ')
