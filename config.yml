@@ -1,4 +1,5 @@
-data_dir: "/Users/smohammed/Documents/GitHub/Code/Support Vectors/LLM Bootcamp/Vector-database/corpus"
+#data_dir: "/Users/smohammed/Documents/GitHub/Code/Support Vectors/LLM Bootcamp/Vector-database/corpus"
+data_dir: "/home/transformers/corpus"
 db_config:
    {
       host: localhost, 
