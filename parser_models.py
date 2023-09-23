@@ -55,7 +55,7 @@ class PdfParser(FileParser):
                     'keywords': keywords,
                     'creation_date': creation_date_raw
                 }
-                metadata_json = json.dumps(metadata,indent=4)
+                metadata_json = json.dumps(metadata)
                 metadata_dict = json.loads(metadata_json)
                 
             return ''.join([pdf_reader.pages[x].extract_text() for x in range(len(pdf_reader.pages))]), metadata_dict
