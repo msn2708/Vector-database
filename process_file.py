@@ -22,14 +22,13 @@ def process_file(filename):
     if doc_type == 'application/pdf':
       try:
         pdf_parser = FileParserFactory.create_parser(filename)
-        content, metadata = pdf_parser.parse(filename)
+        content, metadata, paragraphs = pdf_parser.parse(filename)
       except Exception as e:
         print(f"Error parsing PDF file {filename}: {e}")
     else:
       content = parsed_file['content']
       metadata = parsed_file['metadata']
-      
-    paragraphs = get_paragraphs(content)
+      paragraphs = get_paragraphs(content)
     
     """
     document = Document(file_name=filename, doc_type=doc_type, text=content)

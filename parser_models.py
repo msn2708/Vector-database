@@ -57,8 +57,20 @@ class PdfParser(FileParser):
                 }
                 metadata_json = json.dumps(metadata)
                 metadata_dict = json.loads(metadata_json)
+                paragraphs = []
+                for page_num in range(pdf_reader.numPages):
+                    page = pdf_reader.getPage(page_num)
+                    page_text = page.extractText()
+                    
+                    # Split the page text into paragraphs based on line breaks
+                    page_paragraphs = page_text.split('\n')
+                    
+                    # Remove empty paragraphs
+                    page_paragraphs = [p.strip() for p in page_paragraphs if p.strip()]
+                    
+                    paragraphs.extend(page_paragraphs)
                 
-            return ''.join([pdf_reader.pages[x].extract_text() for x in range(len(pdf_reader.pages))]), metadata_dict
+            return ''.join([pdf_reader.pages[x].extract_text() for x in range(len(pdf_reader.pages))]), metadata_dict, paragraphs
         except Exception as e: 
             print(f"Error {e} trying to parse file {file_path}")
         finally:
