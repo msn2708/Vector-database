@@ -82,7 +82,7 @@ def insert_into_db(filename,metadata,paragraphs,doctype,config):
             print(f"value is {metadata[item]}")
             
             metadata_query = "INSERT INTO vectordb.metadata (document_id, key, value) VALUES ('%s', '%s', '%s')"
-            metadata_row = (document_id, item, metadata[item])
+            metadata_row = (document_id, sqlescape(item), sqlescape(metadata[item]))
             try:
               cursor.execute(metadata_query, metadata_row)
             except mariadb.Error as e:
