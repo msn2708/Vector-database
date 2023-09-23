@@ -6,5 +6,8 @@ import json
 MODEL = SentenceTransformer(Config().get_config().get('embedding_model'))
 
 def get_embedding(text):
-    embeddings = MODEL.encode(text)
-    return ''.join([json.dumps(embedding.tolist()) for embedding in embeddings])
+    return MODEL.encode(text).tobytes()
+    #print(embeddings.tobytes())   
+    #return ''.join([json.dumps(embedding.tolist()) for embedding in embeddings])
+
+#get_embedding("This is a sentence")

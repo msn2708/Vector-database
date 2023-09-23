@@ -65,6 +65,8 @@ def insert_into_db(filename,metadata,paragraphs,doctype,config):
             print("something failed")
         except mariadb.Error as e:
           print(f"SQL Error while inserting DOCUMENT: {e.sqlstate}: {e.msg}")
+          return
+        
         for paragraph in paragraphs:
           chunk_query = "INSERT INTO vectordb.chunk (document_id, text, embedding) VALUES (%s, %s, %s)"
           chunk_row = (document_id, paragraph, get_embedding(paragraph))
@@ -72,19 +74,25 @@ def insert_into_db(filename,metadata,paragraphs,doctype,config):
             cursor.execute(chunk_query, chunk_row)
           except mariadb.Error as e:
             print(f"SQL Error while inserting CHUNK: {e.sqlstate}: {e.msg}")
+            return 
             
-        for key,value in metadata:
-          print(f"key is {key}")
-          print(f"value is {value}")
-          
-          metadata_query = "INSERT INTO vectordb.metadata (document_id, key, value) VALUES (%s, %s, %s)"
-          metadata_row = (document_id, key, value)
-          try:
-            cursor.execute(metadata_query, metadata_row)
-          except mariadb.Error as e:
-            print(f"SQL Error while inserting into METADATA: {e.sqlstate}: {e.msg}")
-          except Exception as e:
-            print(f"Error while inserting into METADATA: {e}")
+        for item in metadata:
+          if metadata[item] != '':
+            print(f"key is {item}")
+            print(f"value is {metadata[item]}")
+            
+            metadata_query = "INSERT INTO vectordb.metadata (document_id, key, value) VALUES ('%s', '%s', '%s')"
+            metadata_row = (document_id, item, metadata[item])
+            try:
+              cursor.execute(metadata_query, metadata_row)
+            except mariadb.Error as e:
+              print(f"SQL Error while inserting into METADATA: {e.sqlstate}: {e.msg}")
+              return
+            except Exception as e:
+              print(f"Error while inserting into METADATA: {e}")
+              return
+            else:
+              continue
 
         # Commit the transaction
         conn.commit()
