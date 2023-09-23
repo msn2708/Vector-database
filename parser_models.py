@@ -58,9 +58,8 @@ class PdfParser(FileParser):
                 metadata_json = json.dumps(metadata)
                 metadata_dict = json.loads(metadata_json)
                 paragraphs = []
-                for page_num in range(pdf_reader.numPages):
-                    page = pdf_reader.getPage(page_num)
-                    page_text = page.extractText()
+                for page_num in range(len(pdf_reader.pages)):
+                    page_text = pdf_reader.pages[page_num].extract_text()
                     
                     # Split the page text into paragraphs based on line breaks
                     page_paragraphs = page_text.split('\n')
