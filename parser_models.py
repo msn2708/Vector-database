@@ -17,23 +17,23 @@ class PdfParser(FileParser):
             if pdf_reader.metadata:
                 # Extract metadata
                 if "/Keywords" in pdf_reader.metadata:
-                    keywords = pdf_reader.metadata["/Keywords"].resolve()
+                    keywords = pdf_reader.metadata["/Keywords"]
                     print(keywords)
                 else:
                     keywords = ''
                 
                 if pdf_reader.metadata.author:
-                    author=pdf_reader.metadata['/Author'].resolve().decode('utf-8').replace('\n', '')
+                    author=pdf_reader.metadata['/Author']
                 else: 
                     author = ''
                 
                 if "/Creator" in pdf_reader.metadata.creator:
-                    creator=pdf_reader.metadata['/Creator'].resolve()[0].decode('utf-8').replace('\n','')
+                    creator=pdf_reader.metadata['/Creator']
                 else: 
                     creator=''
                     
                 if pdf_reader.metadata.subject:
-                    subject=pdf_reader.metadata['/Subject'].resolve()
+                    subject=pdf_reader.metadata['/Subject']
                 else:
                     subject = ''
                 
