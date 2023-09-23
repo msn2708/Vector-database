@@ -48,12 +48,12 @@ class PdfParser(FileParser):
                     creation_date_raw=''
                     
                 metadata = {
-                    'Author': author,
-                    'Creator': creator,
-                    'Subject': subject,
-                    'Title': title,
-                    'Keywords': keywords,
-                    'Creation Date': creation_date_raw
+                    'author': author,
+                    'creator': creator,
+                    'subject': subject,
+                    'title': title,
+                    'keywords': keywords,
+                    'creation_date': creation_date_raw
                 }
                 metadata_json = json.dumps(metadata,indent=4)
                 metadata_dict = json.loads(metadata_json)
