@@ -67,6 +67,9 @@ class PdfParser(FileParser):
                     # Remove empty paragraphs
                     page_paragraphs = [p.strip() for p in page_paragraphs if p.strip()]
                     
+                    #split the paragraphs into sentences and delete any newlines, spaces and tabs in sentences.
+                    # to do code here
+                    
                     paragraphs.extend(page_paragraphs)
                 
             return ''.join([pdf_reader.pages[x].extract_text() for x in range(len(pdf_reader.pages))]), metadata_dict, paragraphs

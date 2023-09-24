@@ -1,53 +1,53 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+# from sqlalchemy import Column, Integer, String, Text, ForeignKey
+# from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.orm import relationship
 
-Base = declarative_base()
+# Base = declarative_base()
 
-class Document(Base):
-    __tablename__ = "document"
+# class Document(Base):
+#     __tablename__ = "document"
 
-    id = Column(Integer, primary_key=True)
-    doc_type = Column(String)
-    text = Column(Text)
-    file_name = Column(Text)
-    chunks = relationship("Chunk", back_populates="document")
-    dict_metadata: relationship("Metadata",back_populates="document")
+#     id = Column(Integer, primary_key=True)
+#     doc_type = Column(String)
+#     text = Column(Text)
+#     file_name = Column(Text)
+#     chunks = relationship("Chunk", back_populates="document")
+#     dict_metadata: relationship("Metadata",back_populates="document")
     
-    def create_chunks(self):
-        paragraphs = self.text.split("\n\n")
+#     def create_chunks(self):
+#         paragraphs = self.text.split("\n\n")
         
-        for paragraph in paragraphs:
-            embedding = '' #create a vector embedding here
-            chunk = Chunk(document=self, text=paragraph, embedding=embedding)
-            self.chunks.append(chunk)            
+#         for paragraph in paragraphs:
+#             embedding = '' #create a vector embedding here
+#             chunk = Chunk(document=self, text=paragraph, embedding=embedding)
+#             self.chunks.append(chunk)            
         
-    def create_metadata(self, metadata:dict):
-        for key, value in metadata:
-            self.dict_metadata.append(Metadata(
-                key=key, 
-                value=value,
-                document=self))
+#     def create_metadata(self, metadata:dict):
+#         for key, value in metadata:
+#             self.dict_metadata.append(Metadata(
+#                 key=key, 
+#                 value=value,
+#                 document=self))
             
-class Chunk(Base):
-    __tablename__ = "chunk"
+# class Chunk(Base):
+#     __tablename__ = "chunk"
     
-    id = Column(Integer, primary_key=True)
-    text = Column(Text)
-    embedding = Column(Text)
+#     id = Column(Integer, primary_key=True)
+#     text = Column(Text)
+#     embedding = Column(Text)
     
-    document_id = Column(Integer, ForeignKey("document.id"))
-    document = relationship("Document", back_populates="chunks")
+#     document_id = Column(Integer, ForeignKey("document.id"))
+#     document = relationship("Document", back_populates="chunks")
     
-class Metadata(Base):
-    __tablename__ = "metadata"
+# class Metadata(Base):
+#     __tablename__ = "metadata"
 
-    id = Column(Integer, primary_key=True)
-    key = Column(String)
-    value = Column(String)
+#     id = Column(Integer, primary_key=True)
+#     key = Column(String)
+#     value = Column(String)
     
-    document_id = Column(Integer, ForeignKey("document.id"))
-"""
+#     document_id = Column(Integer, ForeignKey("document.id"))
+    
 from sqlmodel import SQLModel, Field, Relationship
 import os
 from get_config import get_config
@@ -111,4 +111,4 @@ class Metadata(SQLModel, table=True):
     document: Document = Relationship(back_populates="dict_metadata")
     
 SQLModel.metadata.reflect(engine)
-"""
+
