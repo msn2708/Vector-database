@@ -2,7 +2,7 @@ import os
 from confluent_kafka import Producer, Consumer, KafkaError
 from get_config import Config
 
-def list_files_to_kafka():
+def list_files_to_queue():
     #write each file to a kafka topic
     try:
         config = Config().get_config()
@@ -21,4 +21,4 @@ def list_files_to_kafka():
         producer.flush()
         
 if __name__ == '__main__':
-    list_files()
+    list_files_to_queue()

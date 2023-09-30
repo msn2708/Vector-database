@@ -2,6 +2,7 @@ import yaml
 
 class Config:
     _instance = None
+    _config = None
 
     def __new__(cls):
         if cls._instance is None:

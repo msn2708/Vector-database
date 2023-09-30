@@ -1,9 +1,9 @@
 import os
 from get_config import Config
-from confluent_kafka import Producer, Consumer, KafkaError
+from confluent_kafka import Consumer, KafkaError
 from process_file import process_file
 
-def process_pdf_files_from_queue():
+def process_files_from_queue():
     #read a file from kafka topic
     try:
         config = Config().get_config()
@@ -24,7 +24,6 @@ def process_pdf_files_from_queue():
                     print(f'Error: {message.error().str()}')
             else:
                 print(f'Consumed message: key={message.key()}, value={message.value()}')
-                #process the file
                 process_file(message.value().decode('utf-8'))                                
 
     except KeyboardInterrupt:
@@ -34,4 +33,4 @@ def process_pdf_files_from_queue():
         consumer.close()
         
 if __name__ == '__main__':
-    process_pdf_files_from_queue()
+    process_files_from_queue()

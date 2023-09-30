@@ -9,3 +9,5 @@ sqlescapy
 numpy
 sentence_transformers
 mysql.connector
+psycopg2-binary
+pytorch

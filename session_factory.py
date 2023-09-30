@@ -7,6 +7,7 @@ from get_config import Config
 class SessionFactory(object):
     _self = None
     _engine = None
+    
     def __new__(cls):
         if cls._self is None:
             cls._self = super().__new__(cls)
@@ -15,6 +16,11 @@ class SessionFactory(object):
     def __init__(self):
         if(self._engine is None):
             _engine = create_engine(Config().get_config().get('db_url'))
+            
     
     def get_session(self):
         return sessionmaker(self._engine)
+    
+    def get_engine(self):
+        return self._engine
+    
