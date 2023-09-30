@@ -4,7 +4,7 @@ from get_config import Config
 def list_files():
     try:
         config = Config().get_config()
-        data_dir = config.get('data_dir') 
+        data_dir = config['corpus']['data_dir'] 
         file_list = []  # Initialize an empty list to store file paths
         for root, dirs, files in os.walk(data_dir):
             for file in files:
