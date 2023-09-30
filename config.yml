@@ -7,7 +7,7 @@ db_config:
       password: supportvectors.123, 
       database: vectordb
    }
-#db_url: "mariadb+mariadbconnector://transformers:supportvectors.123@localhost/vectordb"
+
 db_url: "postgresql+psycopg2://transformers:supportvectors.123@localhost:32768/vectordb"
 producer: {
     'bootstrap.servers': 'localhost:9092',  # Replace with your Kafka broker(s)
@@ -19,8 +19,8 @@ consumer: {
     'auto.offset.reset': 'earliest'
 }
 kafka-topic: "tp-list-files"
-
 kafka-embedding-topic: "tp-vector-embedding"
+
 embedding-producer: {
     'bootstrap.servers': 'localhost:9092',  # Replace with your Kafka broker(s)
     'client.id': 'embedding-producer'

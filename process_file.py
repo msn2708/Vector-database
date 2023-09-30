@@ -9,6 +9,7 @@ from orm_models import Document, Metadata, Chunk
 from get_paragraphs import get_paragraphs
 import sys
 from utils.utilities import *
+from write_chunks_to_queue import write_chunks_to_queue
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -17,7 +18,7 @@ from sqlalchemy.orm import sessionmaker
 def process_file(filename):
   if not(is_file_exists(filename) and is_file_readable(filename)):
     print(f"file {filename} is either not readable or does not exist")
-    return
+    return # something more meaningful
   try:
     parsed_file = parser.from_file(filename)
     doc_type = parsed_file["metadata"]["Content-Type"]
@@ -43,8 +44,8 @@ def process_file(filename):
     with Session() as session:  
       session.add(document)
       session.commit()
-      # for chunk in document.chunks:
-      #   write_to_kafka(chunk)
+      for chunk in document.chunks:
+        write_chunks_to_queue(chunk)
   except Exception as e:
     print(f"Error during session save : {e.with_traceback()}")
 

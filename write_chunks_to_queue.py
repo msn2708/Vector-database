@@ -1,7 +1,7 @@
 from confluent_kafka import Producer
 from get_config import Config
 
-def write_to_kafka(chunk):
+def write_chunks_to_queue(chunk):
     try:
         producer = Producer(Config().get_config().get('embedding-producer'))
         producer.produce(Config().get_config().get('kafka-embedding-topic'), key=chunk.chunk_id & '_' & chunk.document_id, value=chunk.embedding)

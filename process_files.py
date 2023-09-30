@@ -5,7 +5,7 @@ from get_config import Config
 import concurrent.futures
 import os
 import sys
-from  import list_files_to_kafka
+from list_files_to_queue import list_files_to_queue
 
 def process_files(data_dir):
   # Get the config file and set up a pool of workers to do all processing in parallel
