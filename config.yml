@@ -1,5 +1,5 @@
 corpus:
-  data_dir: "/home/transformers/corpus"
+  data_dir: "corpus"
 db_config:
    {
       host: localhost, 
@@ -8,7 +8,7 @@ db_config:
       database: vectordb
    }
 
-db_url: "postgresql+psycopg2://transformers:supportvectors.123@localhost:5432/vectordb"
+db_url: "postgresql+psycopg2://transformers:supportvectors.123@localhost:32768/vectordb"
 producer: {
     'bootstrap.servers': 'localhost:9092',  # Replace with your Kafka broker(s)
     'client.id': 'python-producer'
@@ -31,7 +31,7 @@ embedding-consumer: {
     'auto.offset.reset': 'earliest'   
 }
 chunk_size: 500
-similarity_threshold: 0.2
+similarity_threshold: 0.3
 
 models:
   embedding_model: "distilbert-base-nli-mean-tokens"

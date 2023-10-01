@@ -44,8 +44,8 @@ def process_file(filename):
     with Session() as session:  
       session.add(document)
       session.commit()
-      for chunk in document.chunks:
-        write_chunks_to_queue(chunk)
+      # for chunk in document.chunks:
+      #   write_chunks_to_queue(chunk)
   except Exception as e:
     print(f"Error during session save : {e.with_traceback()}")
 
