@@ -2,6 +2,8 @@ import os
 from get_config import Config
 from confluent_kafka import Consumer, KafkaError
 from process_file import process_file
+from initlog import Loggers
+
 
 def process_files_from_queue():
     #read a file from kafka topic
@@ -9,8 +11,8 @@ def process_files_from_queue():
         config = Config().get_config()
         consumer = Consumer(config.get('consumer'))
         consumer.subscribe([config.get('kafka-topic')])
-        #consumer.subscribe(u"tp-list-files")
-        
+        logger = Loggers().get_logger('text-processing')
+                
         while True:
             message = consumer.poll(1.0)
 
@@ -19,14 +21,19 @@ def process_files_from_queue():
 
             if message.error():
                 if message.error().code() == KafkaError._PARTITION_EOF:
-                    print('Reached end of partition')
+                    logger.info ('process_files_from_queue: Reached the end of partition while processing files')
                 else:
-                    print(f'Error: {message.error().str()}')
+                    logger.error (f'process_files_from_queue: Error: {message.error().str()}')
             else:
-                print(f'Consumed message: key={message.key()}, value={message.value()}')
-                process_file(message.value().decode('utf-8'))                                
-
-    except KeyboardInterrupt:
+                try:
+                    logger.info (f'process_files_from_queue: Consumed message: key={message.key()}, value={message.value()}')
+                    process_file(message.value().decode('utf-8'))
+                except Exception as e:
+                    logger.exception(f"process_files_from_queue: Exception encountered when processing {message.key()}")                    
+                    continue
+                finally:
+                    logger.info (f"process_files_from_queue: Successfully proceessed file {message.key()}")                    
+    except Exception:
         pass
 
     finally:

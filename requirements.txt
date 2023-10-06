@@ -12,3 +12,4 @@ mysql.connector
 psycopg2-binary
 torch
 spacy
+ruamel.yaml

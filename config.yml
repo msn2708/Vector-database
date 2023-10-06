@@ -7,8 +7,9 @@ db_config:
       password: supportvectors.123, 
       database: vectordb
    }
+logger: text-processing
 
-db_url: "postgresql+psycopg2://transformers:supportvectors.123@localhost:32768/vectordb"
+db_url: "postgresql+psycopg2://transformers:supportvectors.123@localhost:5432/vectordb"
 producer: {
     'bootstrap.servers': 'localhost:9092',  # Replace with your Kafka broker(s)
     'client.id': 'python-producer'
@@ -30,9 +31,11 @@ embedding-consumer: {
     'group.id': 'embedding-consumer',
     'auto.offset.reset': 'earliest'   
 }
+
 chunk_size: 500
 similarity_threshold: 0.3
 
 models:
-  embedding_model: "distilbert-base-nli-mean-tokens"
-  sentence_encoder: 'distiluse-base-multilingual-cased-v2'
+  #embedding_model: "distilbert-base-nli-mean-tokens"
+  embedding_model: "msmarco-bert-base-dot-v5"
+  sentence_encoder: 'distiluse-base-multilingual-cased-v1'

@@ -1,13 +1,15 @@
-import yaml
 from sentence_transformers import SentenceTransformer
 from utils.utilities import replace_newlines
 import spacy
 from get_config import Config
 import numpy as np
 import re
+from text_processor_exception import TextProcessingError
+import logging
+import sys
+
 
 #this needs to be exposed as gRPC service
-
 class ParagraphSegmenter():
     def __init__(self):
         self.config = Config().get_config()
@@ -24,18 +26,30 @@ class ParagraphSegmenter():
     
     def create_paragraph(self, content):
         # Use Spacy to return an array of sentences from this corpus
-        doc = self.nlp (content)
+        try:
+            doc = self.nlp (content)
+        except Exception as e:
+            raise TextProcessingError(f"ParagraphSegmenter: Unable to parse content. {e.__traceback__}", severity=logging.ERROR)
         #Set p=s1. Now compare p and s2. If they are similar, p=p+s2. Continue until p#s(n)
         previous_sentence = None
         current_length = 0
         paragraph = ''
         paragraphs = []
+        short_words = []
         for sentence in doc.sents:
-            tokens = len(self.nlp(sentence.text))
-            cleaned_sentence = re.sub(pattern='\n+', repl=' ', string=sentence.text)   
-            #cleaned_sentence = replace_newlines(cleaned_sentence)
-      
+            if(len(sentence.text) < 25):
+                short_words.append(re.sub(pattern='\n+', repl=' ', string=sentence.text))
+                continue
+            else:
+                cleaned_sentence = ''.join(short_words) + ' ' + sentence.text
+                cleaned_sentence = re.sub(pattern='\n+', repl=' ', string=cleaned_sentence)
+                cleaned_sentence = re.sub(pattern='\s+', repl=' ', string=cleaned_sentence)
+                short_words = []
+    
+            tokens = len(self.nlp(cleaned_sentence))
+                   
             current_sentence = self.sentence_encoder.encode(cleaned_sentence)
+            
             similarity = 1
             if previous_sentence is not None:
                 similarity = self.cosine_similarity(previous_sentence, current_sentence)
@@ -65,7 +79,9 @@ class ParagraphSegmenter():
     
 #create a main program to invoke
 if __name__ == "__main__":
-    paragraphs = ParagraphSegmenter().create_paragraph("This is ia sentence. And this is another one. The end")
-    for paragraph in paragraphs:
-        print(paragraph)
+    #open a file and read its contents
+    with open(sys.argv[1], mode="r",encoding="utf-8") as f:        
+        paragraphs = ParagraphSegmenter().create_paragraph(f.read())
+        for paragraph in paragraphs:
+            print(paragraph)
 

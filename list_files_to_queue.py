@@ -1,19 +1,26 @@
 import os
-from confluent_kafka import Producer, Consumer, KafkaError
+from confluent_kafka import Producer
 from get_config import Config
+from initlog import Loggers
 
 def list_files_to_queue():
     #write each file to a kafka topic
     try:
         config = Config().get_config()
-        data_dir = config.get('data_dir')     
+        data_dir = config['corpus']['data_dir']   
         producer = Producer(config.get('producer'))
+        topic = config.get('kafka-topic')
+
+        loggers = Loggers()
+        logger = loggers.get_logger(logger_name='text-processing')
+        
         for root,_,files in os.walk(data_dir):
-            for file in files:
-                producer.produce(config.get('kafka-topic'), key=file, value=os.path.join(root, file))
+            for file in files:                
+                producer.produce(topic, key=file, value=os.path.join(root, file))
+                logger.info(f"Listed file {file} to queue {topic} ")
                 producer.flush()
     except Exception as e: 
-        print(f"Error in listing the directory: {e}")
+            logger.error (f"Error in listing the directory: {e}")
     except KeyboardInterrupt:
         pass
     

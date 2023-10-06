@@ -1,22 +1,20 @@
-import multiprocessing
-import os
+import sys
 from tika import parser
 from get_config import Config
-from create_embedding import get_embedding
 from sqlescapy import sqlescape
 from parser_factory import FileParserFactory
 from orm_models import Document, Metadata, Chunk
 from get_paragraphs import get_paragraphs
-import sys
-from utils.utilities import *
+import utils.utilities as utils
 from write_chunks_to_queue import write_chunks_to_queue
+from text_processor_exception import TextProcessingError as tpe
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Function to process each file
 def process_file(filename):
-  if not(is_file_exists(filename) and is_file_readable(filename)):
+  if not(utils.is_file_exists(filename) and utils.is_file_readable(filename)):
     print(f"file {filename} is either not readable or does not exist")
     return # something more meaningful
   try:
@@ -40,12 +38,12 @@ def process_file(filename):
     document.create_metadata(metadata=metadata)
     
     engine = create_engine(Config().get_config().get('db_url'))
-    Session = sessionmaker(engine)
-    with Session() as session:  
+    _session = sessionmaker(engine)
+    with _session() as session:  
       session.add(document)
       session.commit()
-      # for chunk in document.chunks:
-      #   write_chunks_to_queue(chunk)
+      for chunk in document.chunks:
+         write_chunks_to_queue(chunk)
   except Exception as e:
     print(f"Error during session save : {e.with_traceback()}")
 

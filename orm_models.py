@@ -3,7 +3,7 @@ from get_config import Config
 from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
 from typing import Optional
-from create_embedding import get_embedding
+from embeddings.create_embedding import get_embedding
 from get_paragraphs import get_paragraphs
 from paragraph_segmentation import ParagraphSegmenter
 
@@ -21,7 +21,6 @@ class Document(SQLModel, table=True):
     dict_metadata: list["Metadata"] = Relationship(back_populates="document")
     
     def create_chunks(self):
-        #paragraphs = get_paragraphs(self.text)
         paragraphs = ParagraphSegmenter().create_paragraph(self.text)
         for paragraph in paragraphs:
             embedding = get_embedding(paragraph) #create a vector embedding here
