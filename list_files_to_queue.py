@@ -17,7 +17,7 @@ def list_files_to_queue():
         for root,_,files in os.walk(data_dir):
             for file in files:                
                 producer.produce(topic, key=file, value=os.path.join(root, file))
-                logger.info(f"Listed file {file} to queue {topic} ")
+                logger.info(f"Listed file {file.decode('utf-8')} to queue {topic} ")
                 producer.flush()
     except Exception as e: 
             logger.error (f"Error in listing the directory: {e}")

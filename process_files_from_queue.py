@@ -9,13 +9,14 @@ def process_files_from_queue():
     #read a file from kafka topic
     try:
         config = Config().get_config()
-        consumer = Consumer(config.get('consumer'))
+        consumer = Consumer(config.get('consumer'),enable_auto_commit=False)
         consumer.subscribe([config.get('kafka-topic')])
         logger = Loggers().get_logger('text-processing')
                 
         while True:
             message = consumer.poll(1.0)
-
+            consumer.commit()
+            
             if message is None:
                 continue
 
@@ -31,6 +32,7 @@ def process_files_from_queue():
                     
                     logger.info (f'process_files_from_queue: Consumed message: key={key}, value={value}')
                     process_file(value)
+                    
                 except Exception as e:
                     logger.exception(f"process_files_from_queue: Exception encountered when processing {message.key()}")                    
                     continue
