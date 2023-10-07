@@ -1,10 +1,8 @@
 import sys
 from tika import parser
 from get_config import Config
-from sqlescapy import sqlescape
 from parser_factory import FileParserFactory
-from orm_models import Document, Metadata, Chunk
-from get_paragraphs import get_paragraphs
+from orm_models import Document
 import utils.utilities as utils
 from write_chunks_to_queue import write_chunks_to_queue
 from text_processor_exception import TextProcessingError as tpe

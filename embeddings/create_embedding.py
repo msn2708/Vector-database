@@ -11,3 +11,5 @@ device = "cuda:0" if torch.cuda.is_available() else "cpu"
 def get_embedding(text):
     MODEL.to(device)
     return MODEL.encode(text).tobytes()
+
+#print(str(get_embedding("This is a sentence")))

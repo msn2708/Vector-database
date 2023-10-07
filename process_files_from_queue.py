@@ -26,8 +26,11 @@ def process_files_from_queue():
                     logger.error (f'process_files_from_queue: Error: {message.error().str()}')
             else:
                 try:
-                    logger.info (f'process_files_from_queue: Consumed message: key={message.key()}, value={message.value()}')
-                    process_file(message.value().decode('utf-8'))
+                    key = message.key().decode('utf-8')
+                    value = message.value().decode('utf-8')
+                    
+                    logger.info (f'process_files_from_queue: Consumed message: key={key}, value={value}')
+                    process_file(value)
                 except Exception as e:
                     logger.exception(f"process_files_from_queue: Exception encountered when processing {message.key()}")                    
                     continue
