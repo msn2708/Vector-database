@@ -21,6 +21,7 @@ consumer: {
 }
 kafka-topic: "tp-list-files"
 kafka-embedding-topic: "tp-vector-embedding"
+write-chunks-to-queue: false
 
 embedding-producer: {
     'bootstrap.servers': 'localhost:9092',  # Replace with your Kafka broker(s)
@@ -33,7 +34,7 @@ embedding-consumer: {
 }
 
 chunk_size: 500
-similarity_threshold: 0.3
+similarity_threshold: 0.1
 
 models:
   #embedding_model: "distilbert-base-nli-mean-tokens"

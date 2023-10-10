@@ -27,7 +27,8 @@ class ParagraphSegmenter():
     def create_paragraph(self, content):
         # Use Spacy to return an array of sentences from this corpus
         try:
-            doc = self.nlp (content)
+            #doc = self.nlp (content)
+            doc = re.split("\.",content)
         except Exception as e:
             raise TextProcessingError(f"ParagraphSegmenter: Unable to parse content. {e.__traceback__}", severity=logging.ERROR)
         #Set p=s1. Now compare p and s2. If they are similar, p=p+s2. Continue until p#s(n)
@@ -36,14 +37,17 @@ class ParagraphSegmenter():
         paragraph = ''
         paragraphs = []
         short_words = []
-        for sentence in doc.sents:
-            if(len(sentence.text) < 25):
-                short_words.append(re.sub(pattern='\n+', repl=' ', string=sentence.text))
+        #for sentence in doc.sents:
+        for sent in doc:
+            sentence = sent
+            if(len(sentence) < 25):
+                short_words.append(re.sub(pattern='\n+', repl=' ', string=sentence))
                 continue
             else:
-                cleaned_sentence = ''.join(short_words) + ' ' + sentence.text
+                cleaned_sentence = (' '.join(short_words) + ' ' + sentence).strip()
                 cleaned_sentence = re.sub(pattern='\n+', repl=' ', string=cleaned_sentence)
                 cleaned_sentence = re.sub(pattern='\s+', repl=' ', string=cleaned_sentence)
+                cleaned_sentence = re.sub(pattern='\.+', repl=".", string=cleaned_sentence)
                 short_words = []
     
             tokens = len(self.nlp(cleaned_sentence))
@@ -59,13 +63,13 @@ class ParagraphSegmenter():
                     previous_sentence = current_sentence
                 else:
                     #paragraph.strip()
-                    paragraphs.append(paragraph)
+                    paragraphs.append(paragraph + '. ')
                     paragraph=cleaned_sentence
-                    previous_sentence = None
+                    previous_sentence = current_sentence
                     current_length = 0
             else:
                 if(current_length+tokens < self.chunk_size):
-                    paragraph = cleaned_sentence
+                    paragraph = cleaned_sentence.strip()
                     current_length += tokens
                 else:
                     print(f"Sentence too big for encoding: {cleaned_sentence}")

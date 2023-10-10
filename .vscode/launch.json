@@ -11,7 +11,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["corpus/angeleyes.txt"],
+            "args": ["corpus/terminator.txt"],
             "justMyCode": true
         }
     ]

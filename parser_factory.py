@@ -1,16 +1,15 @@
-from parser_models import PdfParser, DocxParser, HtmlParser, FileParser
+from parser_models import PdfParser, DocxParser, HtmlParser, FileParser, MovieParser
 class FileParserFactory:
     @staticmethod
-    def create_parser(filename):
-            
-        file_extension = filename.split('.')[-1].lower()
-
-        if file_extension == 'pdf':
-            return PdfParser()
-        elif file_extension == 'docx':
-            return DocxParser()
-        elif file_extension == 'html':
-            return HtmlParser()
+    def create_parser(filename, doctype):
+        if 'application/pdf' in doctype:
+            return PdfParser(filename)
+        elif 'docx' in doctype:
+            return DocxParser(filename)
+        elif 'html' in doctype:
+            return HtmlParser(filename)
+        elif 'text/plain' in doctype:
+            return MovieParser(filename)         
         else:
-            raise ValueError(f"Unsupported file type: {file_extension}")
+            return FileParser(filename)
         

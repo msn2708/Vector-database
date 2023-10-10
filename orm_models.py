@@ -1,10 +1,8 @@
 from sqlmodel import SQLModel, Field, Relationship
 from get_config import Config
 from sqlalchemy import create_engine
-from sqlalchemy.ext.automap import automap_base
 from typing import Optional
 from embeddings.create_embedding import get_embedding
-from get_paragraphs import get_paragraphs
 from paragraph_segmentation import ParagraphSegmenter
 
 
@@ -16,7 +14,6 @@ class Document(SQLModel, table=True):
     doc_type: str
     file_name: str
     text: str
-    # chunks: list["Chunk"] = Relationship(back_populates="document", sa_relationship_kwargs={"primaryjoin": "Chunk.document_id==Document.document_id", "lazy": "joined",})
     chunks: list["Chunk"] = Relationship(back_populates="document")
     dict_metadata: list["Metadata"] = Relationship(back_populates="document")
     
