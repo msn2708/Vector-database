@@ -113,8 +113,6 @@ class PdfParser(FileParser):
                
             #extract text from the pdf file
             self.content = ''.join([pdf_reader.pages[x].extract_text() for x in range(len(pdf_reader.pages))])
-            
-            #return content, metadata_dict, paragraphs
         except Exception as e: 
             print(f"Error {e} trying to parse file {self.filepath}")
         finally:
