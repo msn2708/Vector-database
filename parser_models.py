@@ -145,7 +145,25 @@ class MovieParser(FileParser):
         
     def get_content(self):
         return self.content
-    
+
+    def parse_scene(self):
+        # Extract and count the scenes based on the "CUT TO:" pattern
+        # and categorize them into outdoor (EXT.) and indoor (INT.) scenes.
+
+        scene_pattern = r"(CUT TO:.*?(EXT\.|INT\.).*?(DAY|NIGHT))"
+        scenes = re.findall(scene_pattern,self.content)
+
+        # Summarize each scene with its location and time of day.
+        scene_summaries = []
+        for match in scenes:
+            _, location_type, time_of_day = match
+            scene_summary = f"{location_type} - {time_of_day}"
+            scene_summaries.append(scene_summary)
+
+        # Count the number of scenes
+        scene_count = len(scene_summaries)
+        scene_count, scene_summaries[:10]  # Display the total count and the first 10 summaries for brevity.
+
     def parse(self):
         try:
             patterns = r"--|FADE IN :|FADE OUT:|FADE IN:|FADE OUT :|CONTINUED:|DISSOLVE TO:|CUT TO:|POV|INT\.|EXT\.|\(CONT'D\)|\(V\.O\.\)|\(continuing\)|FADE IN\.|FADE OUT\.|\([^)]*\)"
